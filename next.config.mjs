@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	images: {
+		domains: ['image.tmdb.org']
+	},
+	env: {
+		API_TOKEN: process.env.API_TOKEN
+	}
+}
 
-export default nextConfig;
+export default nextConfig
