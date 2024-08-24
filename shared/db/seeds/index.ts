@@ -1,6 +1,0 @@
-export { categories } from './categories'
-export { comments } from './comments'
-export { postToTags } from './post-to-tags'
-export { posts } from './posts'
-export { tags } from './tags'
-export { users } from './users'

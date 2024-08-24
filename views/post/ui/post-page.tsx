@@ -1,6 +1,6 @@
 import { ThumbsDown, ThumbsUp } from 'lucide-react'
 
-import { getPost } from '@/shared/api/requests/posts'
+import { getPost } from '@/db/queries/select'
 import { extractIdFromSlug } from '@/shared/lib'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const PostPage = async ({ slug }: Props) => {
-	const postID = extractIdFromSlug(slug)
+	const postID = Number(extractIdFromSlug(slug))
 	const post = await getPost(postID)
 
 	return (

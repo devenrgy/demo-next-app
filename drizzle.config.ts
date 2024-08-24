@@ -1,10 +1,10 @@
 import { defineConfig } from 'drizzle-kit'
 
-import { env } from './shared/config'
+import { env } from '@/shared/config'
 
 export default defineConfig({
-	schema: './shared/db/schemas',
-	out: './shared/db/migrations',
+	schema: './shared/api/schemas',
+	out: './shared/api/migrations',
 	dialect: 'postgresql',
 	dbCredentials: {
 		url: env.POSTGRES_URL

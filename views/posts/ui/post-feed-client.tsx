@@ -4,17 +4,12 @@ import Link from 'next/link'
 import { Eye, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { useState } from 'react'
 
-import { getPosts } from '@/shared/api/requests/posts'
+import { getAllPosts } from '@/db/queries/select'
 import { convertToKebabCase } from '@/shared/lib'
-import type { Post } from '@/shared/model/posts'
 import { Button } from '@/shared/ui'
 import { Badge, Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/ui'
 
 import { PostFeedSkeleton } from './post-feed-skeleton'
-
-interface Props {
-	initialPosts: Post[]
-}
 
 export const PostFeedClient = ({ initialPosts }: Props) => {
 	const [posts, setPosts] = useState(initialPosts)
@@ -24,8 +19,8 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 	const loadMorePosts = () => {
 		setIsLoading(true)
 		setError(null)
-		getPosts({ limit: 5, skip: posts.length })
-			.then(({ posts }) => {
+		getAllPosts(2)
+			.then(posts => {
 				setPosts(prev => [...prev, ...posts])
 			})
 			.catch((error: unknown) => {
@@ -46,11 +41,11 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 								<CardTitle className='text-pretty ~text-lg/2xl'>{post.title}</CardTitle>
 							</CardHeader>
 							<CardContent className='px-0 sm:px-6'>
-								<p className='mb-3'>{post.body}</p>
+								<p className='mb-3'>{post.preview}</p>
 								<ul className='flex gap-2 text-sm'>
-									{post.tags.map((tag, index) => (
+									{post.tags.map(({ tag }, index) => (
 										<li key={index} className='text-muted-foreground'>
-											<Badge variant='secondary'>#{tag}</Badge>
+											<Badge variant='secondary'>#{tag.name}</Badge>
 										</li>
 									))}
 								</ul>
@@ -59,11 +54,11 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 								<ul className='flex gap-6 text-sm'>
 									<li className='flex items-center gap-2'>
 										<ThumbsUp />
-										{post.reactions.likes}
+										{post.likes}
 									</li>
 									<li className='flex items-center gap-2'>
 										<ThumbsDown />
-										{post.reactions.dislikes}
+										{post.dislikes}
 									</li>
 									<li className='flex items-center gap-2'>
 										<Eye />
