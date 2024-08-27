@@ -18,7 +18,7 @@ export const Modal = ({
 	}
 
 	return (
-		<div className='fixed inset-0 grid place-content-center'>
+		<div className='fixed inset-0 z-30 grid place-content-center'>
 			<div className='fixed inset-0 bg-black/70' onClick={closeModal} />
 
 			<div className='z-10 grid max-w-2xl gap-10 rounded-xl border bg-card p-6 text-card-foreground'>

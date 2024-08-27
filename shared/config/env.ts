@@ -1,20 +1,19 @@
 import { config } from 'dotenv'
 import { expand } from 'dotenv-expand'
-import * as v from 'valibot'
+import { z, ZodError } from 'zod'
 
-const envSchema = v.object({
-	POSTGRES_URL: v.string()
+const envSchema = z.object({
+	POSTGRES_URL: z.string().min(1)
 })
 
 expand(config())
 
 try {
-	v.parse(envSchema, process.env)
-} catch (error) {
-	if (error instanceof v.ValiError) {
-		console.error('Environment validation error:', error.message)
+	envSchema.parse(process.env)
+} catch (e) {
+	if (e instanceof ZodError) {
+		console.error('Environment validation error:', e.errors)
 	}
-	console.error(error)
 }
 
-export const env = v.parse(envSchema, process.env)
+export const env = envSchema.parse(process.env)

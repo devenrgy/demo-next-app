@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/db/queries/select'
+import { getAllPosts } from '@/db/queries/posts'
 
 import { PostFeedClient } from './post-feed-client'
 

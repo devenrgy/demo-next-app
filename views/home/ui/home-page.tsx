@@ -1,5 +1,24 @@
+'use client'
+
+import { motion } from 'framer-motion'
+
+import { LampContainer } from '@/shared/ui'
+
 export const HomePage = () => (
-	<section className='container'>
-		<h1 className='mb-5 px-6 font-bold ~text-2xl/4xl sm:px-0'>Home Page</h1>
+	<section>
+		<LampContainer>
+			<motion.h1
+				initial={{ opacity: 0.5, y: 300 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				transition={{
+					delay: 0.3,
+					duration: 0.8,
+					ease: 'easeInOut'
+				}}
+				className='bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl'
+			>
+				Home Page
+			</motion.h1>
+		</LampContainer>
 	</section>
 )

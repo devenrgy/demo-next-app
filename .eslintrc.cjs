@@ -49,6 +49,7 @@ module.exports = {
 		'drizzle/enforce-delete-with-where': 'off',
 		'simple-import-sort/exports': 'warn',
 		'@typescript-eslint/consistent-type-exports': 'error',
-		'@typescript-eslint/consistent-type-imports': 'error'
+		'@typescript-eslint/consistent-type-imports': 'error',
+		'@typescript-eslint/no-empty-object-type': 'off'
 	}
 }

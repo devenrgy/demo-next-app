@@ -4,12 +4,16 @@ import Link from 'next/link'
 import { Eye, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { useState } from 'react'
 
-import { getAllPosts } from '@/db/queries/select'
-import { convertToKebabCase } from '@/shared/lib'
-import { Button } from '@/shared/ui'
+import type { SelectAllPostsWithTags } from '@/db/queries/posts'
+import { getAllPosts } from '@/db/queries/posts'
+import { Button, HoverBorderGradient } from '@/shared/ui'
 import { Badge, Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/ui'
 
 import { PostFeedSkeleton } from './post-feed-skeleton'
+
+interface Props {
+	initialPosts: SelectAllPostsWithTags
+}
 
 export const PostFeedClient = ({ initialPosts }: Props) => {
 	const [posts, setPosts] = useState(initialPosts)
@@ -42,7 +46,7 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 							</CardHeader>
 							<CardContent className='px-0 sm:px-6'>
 								<p className='mb-3'>{post.preview}</p>
-								<ul className='flex gap-2 text-sm'>
+								<ul className='flex flex-wrap gap-2 text-sm'>
 									{post.tags.map(({ tag }, index) => (
 										<li key={index} className='text-muted-foreground'>
 											<Badge variant='secondary'>#{tag.name}</Badge>
@@ -66,11 +70,7 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 									</li>
 								</ul>
 
-								<Link
-									className='w-full sm:w-auto'
-									scroll={false}
-									href={`posts/${post.id.toString()}-${convertToKebabCase(post.title)}`}
-								>
+								<Link className='w-full sm:w-auto' scroll={false} href={`posts/${post.title}`}>
 									<Button className='w-full' variant='outline' size='lg'>
 										More
 									</Button>
@@ -83,9 +83,9 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 				{isLoading && <PostFeedSkeleton />}
 			</ul>
 
-			<Button onClick={loadMorePosts} className='w-full py-6 text-lg' size='lg'>
+			<HoverBorderGradient containerClassName='w-full' duration={2} className='w-full py-6 text-lg'>
 				{!error ? 'Load More' : 'Failed to load data'}
-			</Button>
+			</HoverBorderGradient>
 		</>
 	)
 }

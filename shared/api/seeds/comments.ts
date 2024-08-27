@@ -1,14 +1,15 @@
 import { faker } from '@faker-js/faker'
 
 import type { DB } from '@/db'
-import { commentTable, type InsertComment } from '@/db/schemas'
+import type { CommentSchema } from '@/db/schemas'
+import { commentTable } from '@/db/schemas'
 
 const parentComments = async (db: DB) => {
 	const [postsData, usersData] = await Promise.all([db.query.postTable.findMany(), db.query.userTable.findMany()])
 
 	const randomPosts = faker.helpers.arrayElements(postsData)
 
-	const data: InsertComment[] = randomPosts.map(post => ({
+	const data: CommentSchema[] = randomPosts.map(post => ({
 		message: faker.lorem.words({ min: 1, max: 30 }),
 		postId: post.id,
 		userId: faker.helpers.arrayElement(usersData).id
@@ -22,7 +23,7 @@ const childComments = async (db: DB) => {
 
 	const randomComments = faker.helpers.arrayElements(commentsData)
 
-	const data: InsertComment[] = randomComments.map(comment => ({
+	const data: CommentSchema[] = randomComments.map(comment => ({
 		message: faker.lorem.words({ min: 1, max: 30 }),
 		postId: comment.postId,
 		userId: faker.helpers.arrayElement(usersData).id,

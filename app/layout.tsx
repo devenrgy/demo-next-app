@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const Layout = ({ children }: { children: React.ReactNode }) => (
 	<html className='dark' lang='en' suppressHydrationWarning>
 		<head />
-		<body className={cn('bg-background font-sans antialiased', fontSans.variable)}>
+		<body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
 			<Providers>{children}</Providers>
 		</body>
 	</html>

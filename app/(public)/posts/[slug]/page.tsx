@@ -1,18 +1,13 @@
 import type { Metadata } from 'next'
 
-import { getAllPosts, getPost } from '@/db/queries/select'
-import { convertToKebabCase, extractIdFromSlug } from '@/shared/lib'
+import { getAllPosts, getPost } from '@/db/queries/posts'
 import { PostPage } from '@/views/post'
 
-export const revalidate = 0
-export const dynamicParams = false
-
 export const generateMetadata = async ({ params: { slug } }: Props): Promise<Metadata> => {
-	const postID = Number(extractIdFromSlug(slug))
-	const post = await getPost(postID)
+	const post = await getPost(slug)
 
 	return {
-		title: post.title
+		title: post?.title ?? 'Not Found'
 	}
 }
 
@@ -20,7 +15,7 @@ export const generateStaticParams = async () => {
 	const posts = await getAllPosts()
 
 	return posts.map(post => ({
-		slug: `${post.id.toString()}-${convertToKebabCase(post.title)}`
+		slug: post.title
 	}))
 }
 
@@ -31,7 +26,7 @@ interface Props {
 }
 
 const Page = ({ params: { slug } }: Props) => (
-	<div className='container max-w-2xl'>
+	<div className='container max-w-2xl ~py-6/20'>
 		<PostPage slug={slug} />
 	</div>
 )
