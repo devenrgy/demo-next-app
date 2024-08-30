@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import type { SelectAllPostsWithTags } from '@/db/queries/posts'
 import { getAllPosts } from '@/db/queries/posts'
+import { cn } from '@/shared/lib'
 import { Button, HoverBorderGradient } from '@/shared/ui'
 import { Badge, Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/ui'
 
@@ -13,19 +14,25 @@ import { PostFeedSkeleton } from './post-feed-skeleton'
 
 interface Props {
 	initialPosts: SelectAllPostsWithTags
+	totalPages: number
 }
 
-export const PostFeedClient = ({ initialPosts }: Props) => {
+export const PostFeedClient = ({ initialPosts, totalPages }: Props) => {
 	const [posts, setPosts] = useState(initialPosts)
 	const [error, setError] = useState<unknown>()
 	const [isLoading, setIsLoading] = useState(false)
+	const [currentPage, setCurrentPage] = useState(1)
 
 	const loadMorePosts = () => {
+		if (currentPage >= totalPages) return
+
 		setIsLoading(true)
 		setError(null)
-		getAllPosts(2)
-			.then(posts => {
+
+		getAllPosts(currentPage + 1)
+			.then(({ posts }) => {
 				setPosts(prev => [...prev, ...posts])
+				setCurrentPage(prev => prev + 1)
 			})
 			.catch((error: unknown) => {
 				setError(error)
@@ -83,7 +90,12 @@ export const PostFeedClient = ({ initialPosts }: Props) => {
 				{isLoading && <PostFeedSkeleton />}
 			</ul>
 
-			<HoverBorderGradient containerClassName='w-full' duration={2} className='w-full py-6 text-lg'>
+			<HoverBorderGradient
+				onClick={loadMorePosts}
+				containerClassName={cn('w-full', { hidden: currentPage >= totalPages })}
+				duration={2}
+				className={cn('w-full py-6 text-lg', { hidden: currentPage >= totalPages })}
+			>
 				{!error ? 'Load More' : 'Failed to load data'}
 			</HoverBorderGradient>
 		</>

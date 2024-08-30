@@ -3,7 +3,7 @@ import { getAllPosts } from '@/db/queries/posts'
 import { PostFeedClient } from './post-feed-client'
 
 export const PostFeedServer = async () => {
-	const initialPostsFeed = await getAllPosts()
+	const { posts, totalPages } = await getAllPosts()
 
-	return <PostFeedClient initialPosts={initialPostsFeed} />
+	return <PostFeedClient initialPosts={posts} totalPages={totalPages} />
 }
